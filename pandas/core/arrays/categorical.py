@@ -6,10 +6,7 @@ import operator
 from shutil import get_terminal_size
 from typing import (
     TYPE_CHECKING,
-    Dict,
     Hashable,
-    List,
-    Optional,
     Sequence,
     Tuple,
     Type,
@@ -359,7 +356,7 @@ class Categorical(NDArrayBackedExtensionArray, PandasObject, ObjectStringArrayMi
         values,
         categories=None,
         ordered=None,
-        dtype: Optional[Dtype] = None,
+        dtype: Dtype | None = None,
         fastpath=False,
         copy: bool = True,
     ):
@@ -473,11 +470,11 @@ class Categorical(NDArrayBackedExtensionArray, PandasObject, ObjectStringArrayMi
         return self._dtype
 
     @property
-    def _constructor(self) -> Type[Categorical]:
+    def _constructor(self) -> type[Categorical]:
         return Categorical
 
     @classmethod
-    def _from_sequence(cls, scalars, *, dtype: Optional[Dtype] = None, copy=False):
+    def _from_sequence(cls, scalars, *, dtype: Dtype | None = None, copy=False):
         return Categorical(scalars, dtype=dtype, copy=copy)
 
     def astype(self, dtype: Dtype, copy: bool = True) -> ArrayLike:
@@ -547,7 +544,7 @@ class Categorical(NDArrayBackedExtensionArray, PandasObject, ObjectStringArrayMi
         """
         return self.categories.itemsize
 
-    def tolist(self) -> List[Scalar]:
+    def tolist(self) -> list[Scalar]:
         """
         Return a list of the values.
 
@@ -630,7 +627,7 @@ class Categorical(NDArrayBackedExtensionArray, PandasObject, ObjectStringArrayMi
 
     @classmethod
     def from_codes(
-        cls, codes, categories=None, ordered=None, dtype: Optional[Dtype] = None
+        cls, codes, categories=None, ordered=None, dtype: Dtype | None = None
     ):
         """
         Make a Categorical type from codes and categories or dtype.
@@ -1369,7 +1366,7 @@ class Categorical(NDArrayBackedExtensionArray, PandasObject, ObjectStringArrayMi
 
     # -------------------------------------------------------------
 
-    def __array__(self, dtype: Optional[NpDtype] = None) -> np.ndarray:
+    def __array__(self, dtype: NpDtype | None = None) -> np.ndarray:
         """
         The numpy array interface.
 
@@ -1960,7 +1957,7 @@ class Categorical(NDArrayBackedExtensionArray, PandasObject, ObjectStringArrayMi
         codes = self.categories.get_indexer(rvalue)
         return codes.astype(self._ndarray.dtype, copy=False)
 
-    def _reverse_indexer(self) -> Dict[Hashable, np.ndarray]:
+    def _reverse_indexer(self) -> dict[Hashable, np.ndarray]:
         """
         Compute the inverse of a categorical, returning
         a dict of categories -> indexers.
@@ -2187,7 +2184,7 @@ class Categorical(NDArrayBackedExtensionArray, PandasObject, ObjectStringArrayMi
 
     @classmethod
     def _concat_same_type(
-        cls: Type[CategoricalT], to_concat: Sequence[CategoricalT], axis: int = 0
+        cls: type[CategoricalT], to_concat: Sequence[CategoricalT], axis: int = 0
     ) -> CategoricalT:
         from pandas.core.dtypes.concat import union_categoricals
 
